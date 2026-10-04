@@ -1,0 +1,91 @@
+# Watchlist. Everything under `defaults` applies to every company and can be
+# overridden per company by repeating the key inside that company's entry.
+
+defaults:
+  # Sent to each site's own search box. Keep these broad; `title` does the narrowing.
+  search:
+    - software engineer
+    - software developer
+
+  title:
+    # A job is kept if its title contains at least one of these...
+    include:
+      - software engineer
+      - software developer
+      - software development engineer
+      - sw engineer
+      - sde
+      - java
+      - c++
+      - backend
+      - member of technical staff
+      - mts
+    # ...and none of these.
+    exclude:
+      - intern
+      - internship
+      - apprentice
+      - principal
+      - distinguished
+      - director
+      - manager
+      - mgr
+      - vice president
+      - architect
+
+  # Keep only jobs whose location contains one of these (case-insensitive).
+  # Empty list = every location.
+  # Cities are listed because some sites omit the country (Walmart writes "IN KA BANGALORE").
+  locations:
+    - india
+    - bangalore
+    - bengaluru
+    - hyderabad
+    - chennai
+    - pune
+    - mumbai
+    - gurgaon
+    - gurugram
+    - noida
+    - delhi
+    - kolkata
+
+  # Compared with the years of experience stated in the job description.
+  # Jobs that state no figure are always kept.
+  experience:
+    min_years: 2      # drop roles asking for less than this (entry level)
+    max_years: null   # e.g. 5 to drop roles asking for more than 5 years
+
+  skills:
+    prefer: [java, c++]   # tagged in the alert and listed first
+    required: false       # true = drop jobs that mention none of them
+
+companies:
+  - name: JPMorgan Chase
+    type: oracle
+    url: https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001
+
+  - name: Walmart
+    type: workday
+    url: https://walmart.wd504.myworkdayjobs.com/WalmartExternal
+
+  - name: Visa
+    type: workday
+    url: https://visa.wd5.myworkdayjobs.com/Visa
+
+  - name: NetApp
+    type: talentbrew
+    url: https://careers.netapp.com
+
+  - name: EY
+    type: successfactors
+    url: https://careers.ey.com/ey
+    search: [java, c++, software engineer]   # EY rarely uses 'software engineer' in titles
+    max_jobs: 300   # results are newest-first, so the first pages are enough
+
+  # Any other career page is rendered in a headless browser:
+  # - name: Example
+  #   url: https://example.com/careers
+  #   options:
+  #     selector: "a.job-card"        # optional: CSS selector of each job link/card
+  #     load_more: "button.load-more" # optional: button to click for more results
