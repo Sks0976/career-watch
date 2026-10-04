@@ -15,26 +15,23 @@ defaults:
       - software development engineer
       - sw engineer
       - sde
-      - java
-      - c++
-      - backend
-      - member of technical staff
-      - mts
     # ...and none of these.
     exclude:
       - intern
       - internship
       - apprentice
+      - staff
+      - lead
       - principal
       - distinguished
+      - architect
       - director
       - manager
       - mgr
+      - vp
       - vice president
-      - architect
+      - head
 
-  # Keep only jobs whose location contains one of these (case-insensitive).
-  # Empty list = every location.
   # Cities are listed because some sites omit the country (Walmart writes "IN KA BANGALORE").
   locations:
     - india
@@ -81,6 +78,10 @@ companies:
     type: successfactors
     url: https://careers.ey.com/ey
     search: [java, c++, software engineer]   # EY rarely uses 'software engineer' in titles
+    title:
+      include: [software engineer, software developer, java, c++]
+      # no "staff" here: at EY it is the entry-level grade, not a senior one
+      exclude: [intern, internship, lead, principal, architect, director, manager, vice president]
     max_jobs: 300   # results are newest-first, so the first pages are enough
 
   # Any other career page is rendered in a headless browser:
