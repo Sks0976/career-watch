@@ -39,9 +39,10 @@ def build_messages(sections: list[tuple[str, list[str]]]) -> list[str]:
 
 def send(messages: list[str], dry_run: bool = False) -> None:
     token, chat_id = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
-    if dry_run or not (token and chat_id):
-        if not dry_run and messages:
-            print("TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set - printing instead of sending")
+    if not dry_run and not (token and chat_id):
+        # failing here keeps the state unsaved, so nothing is marked as seen without being delivered
+        raise RuntimeError("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set (or use --dry-run)")
+    if dry_run:
         for message in messages:
             print("-" * 60 + "\n" + message)
         return
