@@ -7,6 +7,7 @@ DEFAULTS = {
     "search": ["software engineer"],
     "title": {"include": [], "exclude": []},
     "locations": [],
+    "country": "",
     "experience": {"min_years": None, "max_years": None},
     "skills": {"prefer": [], "required": False},
     "max_jobs": 1500,
@@ -21,6 +22,8 @@ class Company:
     search: list[str] = field(default_factory=list)
     title: dict = field(default_factory=dict)
     locations: list[str] = field(default_factory=list)
+    # sites that can filter by country on their side use this to fetch fewer jobs
+    country: str = ""
     experience: dict = field(default_factory=dict)
     skills: dict = field(default_factory=dict)
     max_jobs: int = 1500

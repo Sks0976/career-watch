@@ -1,10 +1,10 @@
 import httpx
 
 from ..config import Company
-from .apis import Greenhouse, Lever, Oracle, Workday
+from .apis import Amazon, Eightfold, Greenhouse, Lever, Oracle, SmartRecruiters, Workday
 from .base import Fetcher, new_client
 from .generic import Generic
-from .pages import SuccessFactors, TalentBrew
+from .pages import Google, SuccessFactors, TalentBrew
 
 TYPES: dict[str, type[Fetcher]] = {
     "workday": Workday,
@@ -13,8 +13,15 @@ TYPES: dict[str, type[Fetcher]] = {
     "lever": Lever,
     "talentbrew": TalentBrew,
     "successfactors": SuccessFactors,
+    "smartrecruiters": SmartRecruiters,
+    "eightfold": Eightfold,
+    "amazon": Amazon,
+    "google": Google,
     "generic": Generic,
 }
+
+# sources with a fixed address, so `url` can be left out
+NO_URL = {"amazon", "google"}
 
 # url fragments that identify a platform when no type is given
 _HOSTS = {
@@ -22,6 +29,7 @@ _HOSTS = {
     "oraclecloud.com": "oracle",
     "greenhouse.io": "greenhouse",
     "lever.co": "lever",
+    "smartrecruiters.com": "smartrecruiters",
 }
 
 
@@ -35,6 +43,6 @@ def detect(company: Company) -> str:
 
 def build(company: Company, client: httpx.Client) -> Fetcher:
     kind = detect(company)
-    if not company.url:
+    if kind not in NO_URL and not company.url:
         raise ValueError(f"{company.name}: 'url' is required")
     return TYPES[kind](company, client)

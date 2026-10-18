@@ -138,3 +138,40 @@ def test_config_defaults_and_overrides(tmp_path):
     path.write_text("companies:\n  - name: A\n    urll: x\n", encoding="utf-8")
     with pytest.raises(ValueError):
         config.load(path)
+
+
+class FakeResponse:
+    def __init__(self, data):
+        self.data = data
+
+    def json(self):
+        return self.data
+
+
+def workday_facets(*groups):
+    return {"facets": [{"facetParameter": "locationMainGroup", "values": [
+        {"facetParameter": param, "values": [{"descriptor": d, "id": i} for d, i in values]}
+        for param, values in groups]}]}
+
+
+@pytest.mark.parametrize("groups,expected", [
+    # one value named after the country wins over its cities
+    ([("locationCountry", [("India", "in"), ("Indiana", "x")]), ("locations", [("Pune, India", "p"), ("Bengaluru, India", "b")])],
+     {"locationCountry": ["in"]}),
+    # no country facet: every matching city, never "Indiana"/"Indianapolis"
+    ([("locations", [("Bangalore, India", "b"), ("Indianapolis, Indiana, US", "x"), ("Pune, India", "p")])],
+     {"locations": ["b", "p"]}),
+    ([("locations", [("Austin, TX", "a")])], {}),
+])
+def test_workday_country_facet(groups, expected):
+    from careerwatch.fetchers.apis import Workday
+    fetcher = Workday(company(country="India", url="https://acme.wd5.myworkdayjobs.com/Ext"), client=None)
+    fetcher.request = lambda *a, **k: FakeResponse(workday_facets(*groups))
+    assert fetcher._country_facet("api", "software engineer") == expected
+
+
+def test_with_country():
+    from careerwatch.fetchers.apis import with_country
+    assert with_country("3 Locations", "India") == "3 Locations, India"
+    assert with_country("Pune, India", "India") == "Pune, India"
+    assert with_country("", "India") == "India"

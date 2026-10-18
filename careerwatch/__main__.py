@@ -1,5 +1,6 @@
 import argparse
 import sys
+import time
 
 from . import config, filters, notify
 from .fetchers import build, detect, new_client
@@ -13,11 +14,13 @@ WARN_AFTER = 3
 
 def check(company, fetcher, state, list_only=False):
     """Returns (jobs to alert on, number of jobs passing the title/location filters)."""
+    started = time.monotonic()
     jobs = fetcher.fetch()
     if not jobs:
         raise RuntimeError("no jobs found on the page")
     candidates = [j for j in jobs if filters.title_ok(j, company) and filters.location_ok(j, company)]
-    print(f"[{company.name}] {len(jobs)} fetched, {len(candidates)} pass title/location filters")
+    print(f"[{company.name}] {len(jobs)} fetched in {time.monotonic() - started:.0f}s, "
+          f"{len(candidates)} pass title/location filters", flush=True)
     if list_only:
         return candidates, len(candidates)
     alerts = []

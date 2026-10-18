@@ -66,3 +66,28 @@ class SuccessFactors(Fetcher):
     def describe(self, job: Job) -> str:
         node = LexborHTMLParser(self.request("GET", job.url).text).css_first("span.jobdescription")
         return node.html if node else ""
+
+
+class Google(Fetcher):
+    """Google careers; no url needed. The listing already includes the minimum qualifications."""
+
+    BASE = "https://www.google.com/about/careers/applications/"
+
+    def search(self, term: str) -> Iterator[Job]:
+        page = 1
+        while True:
+            params = {"q": term, "location": self.company.country, "sort_by": "date", "page": page}
+            tree = LexborHTMLParser(self.request("GET", self.BASE + "jobs/results/", params=params).text)
+            links = tree.css('a[href^="jobs/results/"][aria-label]')
+            for a in links:
+                href = a.attributes["href"]
+                card = a
+                while card.parent is not None and card.tag != "li":
+                    card = card.parent
+                place = card.css_first("span.r0wTof")  # class name of the location line
+                yield Job(id=re.findall(r"results/(\d+)", href)[0], title=_text(card.css_first("h3")),
+                          url=self.BASE + href.split("?")[0], location=_text(place).replace(";", "; "),
+                          description=card.text(separator=" "))
+            if not links:
+                return
+            page += 1

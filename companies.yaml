@@ -13,6 +13,7 @@ defaults:
       - software engineer
       - software developer
       - software development engineer
+      - software dev engineer
       - sw engineer
       - sde
     # ...and none of these.
@@ -31,6 +32,10 @@ defaults:
       - vp
       - vice president
       - head
+
+  # Sites that can filter by country on their side (Workday, Oracle, Eightfold,
+  # Amazon, Google) only return jobs in this country, which keeps runs fast.
+  country: India
 
   # Cities are listed because some sites omit the country (Walmart writes "IN KA BANGALORE").
   locations:
@@ -83,6 +88,85 @@ companies:
       # no "staff" here: at EY it is the entry-level grade, not a senior one
       exclude: [intern, internship, lead, principal, architect, director, manager, vice president]
     max_jobs: 300   # results are newest-first, so the first pages are enough
+
+  # --- Big tech ---
+  - name: Amazon
+    type: amazon
+
+  - name: Google
+    type: google
+
+  - name: Microsoft
+    type: eightfold
+    url: https://apply.careers.microsoft.com
+
+  - name: Qualcomm
+    type: eightfold
+    url: https://careers.qualcomm.com
+
+  - name: Cisco
+    url: https://cisco.wd5.myworkdayjobs.com/Cisco_Careers
+
+  - name: Adobe
+    url: https://adobe.wd5.myworkdayjobs.com/external_experienced
+
+  - name: Salesforce
+    url: https://salesforce.wd12.myworkdayjobs.com/External_Career_Site
+    title:   # levels are named MTS (SE II) and SMTS (senior); LMTS/PMTS are lead/principal
+      include: [member of technical staff, mts, smts, software engineering, software engineer]
+      exclude: [lmts, pmts, lead, principal, architect, manager, director, intern, consultant]
+
+  - name: Nvidia
+    url: https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite
+
+  - name: Intel
+    url: https://intel.wd1.myworkdayjobs.com/External
+
+  - name: Autodesk
+    url: https://autodesk.wd1.myworkdayjobs.com/Ext
+
+  - name: Workday
+    url: https://workday.wd5.myworkdayjobs.com/Workday
+
+  - name: HPE
+    url: https://hpe.wd5.myworkdayjobs.com/Jobsathpe
+
+  - name: Target
+    url: https://target.wd5.myworkdayjobs.com/targetcareers
+    title:   # Target's tech titles are "Engineer" / "Sr Engineer" without "software"
+      include: [engineer]
+      exclude: [lead, principal, staff, manager, director, intern, data scientist, pen tester]
+
+  - name: PayPal
+    url: https://paypal.wd1.myworkdayjobs.com/jobs
+
+  - name: Mastercard
+    url: https://mastercard.wd1.myworkdayjobs.com/CorporateCareers
+
+  - name: Databricks
+    url: https://boards.greenhouse.io/databricks
+
+  - name: Stripe
+    url: https://boards.greenhouse.io/stripe
+
+  - name: Rubrik
+    url: https://boards.greenhouse.io/rubrik
+
+  # --- Indian product companies ---
+  - name: Swiggy
+    url: https://jobs.smartrecruiters.com/SWIGGY
+
+  - name: Razorpay
+    url: https://boards.greenhouse.io/razorpaysoftwareprivatelimited
+
+  - name: Groww
+    url: https://boards.greenhouse.io/groww
+
+  - name: Meesho
+    url: https://jobs.lever.co/meesho
+
+  - name: CRED
+    url: https://jobs.lever.co/cred
 
   # Any other career page is rendered in a headless browser:
   # - name: Example

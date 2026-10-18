@@ -43,15 +43,21 @@ to override it.
 | `talentbrew` | Radancy/TalentBrew sites (`/search-jobs` in the address) | `https://careers.<company>.com` |
 | `greenhouse` | `boards.greenhouse.io/<board>` | the board address |
 | `lever` | `jobs.lever.co/<company>` | the board address |
+| `smartrecruiters` | `jobs.smartrecruiters.com/<company>` | the board address |
+| `eightfold` | Eightfold sites (Microsoft, Qualcomm) | the careers host, e.g. `https://careers.qualcomm.com` |
+| `amazon` | amazon.jobs | not needed |
+| `google` | Google careers | not needed |
 | `generic` | anything else | the page that lists the jobs |
 
-`type` can be left out for Workday, Oracle, Greenhouse and Lever addresses.
+`type` can be left out for Workday, Oracle, Greenhouse, Lever and SmartRecruiters addresses.
 Any other address without a `type` is treated as `generic`, which opens the page
 in a headless browser and collects links that look like job postings. If it
 picks up the wrong links, set `options.selector` to the CSS selector of a job link.
 
-Workday sites can be narrowed on the server with `options.facets`, and Oracle
-sites with `options.finder` (for example `selectedLocationsFacet: "<id>"`).
+`country` (India by default) is applied on the site's side for Workday, Oracle,
+Eightfold, Amazon and Google, so only that country's jobs are downloaded. The
+`locations` list is then checked on every job, whatever the source. To override
+the automatic country filter, set `options.facets` (Workday) or `options.finder` (Oracle).
 
 ## Running locally
 
