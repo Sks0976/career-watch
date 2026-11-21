@@ -1538,18 +1538,17 @@
   }
  },
  "failures": {
-  "Adobe": 13,
-  "Autodesk": 10,
-  "Cisco": 14,
-  "HPE": 14,
-  "Intel": 12,
-  "Mastercard": 14,
-  "Nvidia": 14,
-  "PayPal": 3,
-  "Salesforce": 12,
-  "Target": 14,
-  "Visa": 5,
-  "Walmart": 10,
-  "Workday": 5
+  "Adobe": 14,
+  "Autodesk": 11,
+  "Cisco": 15,
+  "HPE": 15,
+  "Intel": 13,
+  "Mastercard": 15,
+  "Nvidia": 15,
+  "PayPal": 4,
+  "Target": 15,
+  "Visa": 6,
+  "Walmart": 11,
+  "Workday": 6
  }
 }
